@@ -5,14 +5,14 @@
 # clear everything
 rm(list = ls())     # this 'says' remove, and the list of things to remove is everything 'ls()'
 
-# load packages, in R there are user-generated sets of funcations called 'packages',
+# load packages, in R there are user-generated sets of functions called 'packages',
 # 'library()' loads these specialty libraries
 library(tidyverse)  # this is actually a series of packages for data visualization and data management
+library(magrittr)   # gives access to "the pipe" %>% which can be read as "and then"
+library(tidycensus) # access to Census data in a tidy way
                     # additional information and examples
                     # https://walkerke.github.io/tidycensus/articles/basic-usage.html#searching-for-variables
                     # https://walkerke.github.io/tidycensus/articles/spatial-data.html
-library(magrittr)   # gives access to "the pipe" %>% which can be read as "and then"
-library(tidycensus) # access to Census data in a tidy way
 library(sf)         # Spatial Features, spatial data support and management
 library(mapview)    # makes web maps, not actually using this yet
 
