@@ -1,7 +1,13 @@
+
 # Script by Dexter H. Locke, PhD
 # started on 
 # Thu Sep  5 08:29:56 2019 ------------------------------
 # for showing how to access Census data, calculate racial composition, map it
+
+# updated
+# Tue Sep 10 14:07:09 2019 ------------------------------
+# for writing out GIS data
+
 # clear everything
 rm(list = ls())     # this 'says' remove, and the list of things to remove is everything 'ls()'
 
@@ -37,7 +43,7 @@ acs_2017 <- load_variables(2017, 'acs5', cache = FALSE); View(acs_2017)
 options(tigris_use_cache = TRUE)
 
 # read in year 2009 - 2013 5-year ACS
-nh_1 <- get_acs(state = 'CT',                # Connecticut
+nh1 <- get_acs(state = 'CT',                # Connecticut
                 county = 'New Haven County', # larger than we want, hence filter below
                 geography = 'block group',   # blocks are within block groups, block groups are within tracts. Not all of the data we want are available in blocks
                 year = 2013,                 # matches line 26
@@ -59,9 +65,9 @@ nh_1 <- get_acs(state = 'CT',                # Connecticut
 # my familiarity of the study area this was a quick and accurate method, but bad for teaching
 
 # double check
-head(nh_1) # this give the first six rows of the tabular data, a good check
+head(nh1) # this give the first six rows of the tabular data, a good check
 
-nh_1 %>%                              # take this data, and then
+nh1 %>%                              # take this data, and then
   filter(variable != 'medincome') %>% # filter out income (its on a different scale than population), and then
   mutate(pct = 100*(estimate / summary_est)) %>% # create a new variable called "pct" short for "percent"
                                                  # by taking the estimate / dividing it by total population, see line 46,
@@ -76,7 +82,7 @@ nh_1 %>%                              # take this data, and then
 
 # read in year 2009 - 2013 5-year ACS. "nh_1" was for New Haven 1 (as in first time period)
 # basically just repeat line 39 to 74 but for the second time period
-nh_2 <- get_acs(state = 'CT',
+nh2 <- get_acs(state = 'CT',
                 county = 'New Haven County',
                 geography = 'block group',
                 year = 2017,
@@ -95,9 +101,9 @@ nh_2 <- get_acs(state = 'CT',
   filter(str_detect(GEOID, '0900914') | str_detect(GEOID, '090093614'))
 
 # double check 
-head(nh_2)
+head(nh2)
 
-nh_2 %>% 
+nh2 %>% 
   filter(variable != 'medincome') %>% 
   mutate(pct = 100*(estimate / summary_est)) %>% 
   ggplot() + 
@@ -106,9 +112,73 @@ nh_2 %>%
   theme_bw() +
   scale_fill_viridis_c()
 
+
+# the versions of the data downloaded had a "tall" format
+# see the "output = 'wide' " was using the default 'tidy' which is tall
+# ArcGIS will prefer a "wide" format.
+# see that "summary_var" is now commented out and that 
+# "totpop" has been added
+# see that we have set "output" to "wide"
+nh1_gis <- get_acs(state = 'CT',                # 'nh1_gis' to denote a more GIS-friendly version
+               county = 'New Haven County',
+               geography = 'block group',
+               year = 2013,
+               survey = 'acs5',
+               moe_level = 95,
+               # summary_var = 'B02001_001',  # see help(get_acs) and the tidycensus links above, this is total population
+               variables = c(medincome = 'B19013_001', 
+                             totpop = 'B02001_001', # total population, was the summary_var before
+                             white = 'B02001_002',
+                             black = 'B02001_003',
+                             am_ind = 'B02001_004',
+                             asian = 'B02001_005',
+                             pac_is = 'B02001_006',
+                             other_race ='B02001_007'),
+               output = 'wide',
+               geometry = TRUE) %>% # this creates the spatial data
+  filter(str_detect(GEOID, '0900914') | str_detect(GEOID, '090093614'))
+
+head(nh1_gis) # see the difference?
+head(nh1)
+
+# repeat for second time period
+nh2_gis <- get_acs(state = 'CT',
+               county = 'New Haven County',
+               geography = 'block group',
+               year = 2017,
+               survey = 'acs5',
+               moe_level = 95,
+               #summary_var = 'B02001_001',
+               variables = c(medincome = 'B19013_001', # much slower than c('B19013_001', 'B01003_001')
+                             totpop = 'B02001_001',
+                             white = 'B02001_002',
+                             black = 'B02001_003',
+                             am_ind = 'B02001_004',
+                             asian = 'B02001_005',
+                             pac_is = 'B02001_006',
+                             other_race = 'B02001_007'),
+               output = 'wide',
+               geometry = TRUE) %>% 
+  filter(str_detect(GEOID, '0900914') | str_detect(GEOID, '090093614'))
+
+head(nh2_gis) # see the difference?
+head(nh2)
+
+
+# write out the polygons
+# note that we could have downloaded the data and directly saved them 
+# by adding a pipe " %>% " after line 162 straight into the st_write() function
+st_write(nh1_gis, 'shp/NH_2009_2013_5year_ACS.shp')
+st_write(nh2_gis, 'shp/NH_2013_2017_5year_ACS.shp')
+
+# the warnings are because R can handle long names
+# but ESRI's shapefile format cannot. The names will be ok, but this could 
+# be a problem with longer field names.
+# see 'janitor' package function called 'clean_names'
+
 # todo: consider other Census variables like vacancy, ownership, etc
-# todo: write into a format that ArcGIS can read, summarize tree data
 # todo: read back in to R, visualize, run statistics
 
 # end
 # Fri Sep  6 14:35:29 2019 ------------------------------
+# Tue Sep 10 14:43:41 2019 ------------------------------
