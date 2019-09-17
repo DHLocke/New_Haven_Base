@@ -32,19 +32,19 @@ Take a [look at the base page](https://github.com/DHLocke/New_Haven_Base), you'l
 
 Then I opened up ArcMap (do you have access?), created a file geodatabase, and projected the shapefiles to match the land cover data mentioned in message to the larger group "LandCover_NewHaven_2008.img". When you get access to that (not included in the online bundle due to size), you'll see there are seven mutually exclusive land cover classes:
 
-*Tree canopy (suggest mapping as dark green)
-*Grass/ shrub (suggest light green)
-*Bare soil (brown or tan)
-*Water (blue)
-*Buildings (red)
-*Roads / rail roads (black)
-*Other impervious surfaces like sidewalks, parking lots, etc (light gray). 
+*Tree canopy (suggest mapping as dark green)  
+*Grass/ shrub (suggest light green)  
+*Bare soil (brown or tan)  
+*Water (blue)  
+*Buildings (red)  
+*Roads / rail roads (black)  
+*Other impervious surfaces like sidewalks, parking lots, etc (light gray)  
 
 [UTC_summary.py](https://github.com/DHLocke/New_Haven_Base/blob/master/UTC_summary.py) is a python version of what was done in ArcMap. The pathways will need to be changed to match your computer. You can use the results tab in ArcMap to see these steps as well: they mirror eachother. After projecting, I used the toolbox linked to next (that's what's being referenced around line 31). That will not be reproducible from python because there is a lot of customization built into [Tree Canopy Assessment Tools (with TC Change).tbx](https://github.com/DHLocke/New_Haven_Base/blob/master/Tree%20Canopy%20Assessment%20Tools%20(with%20TC%20Change).tbx). Find the Metrics tool in the ArcGIS (ie not Arc Pro) folder. Double click to launch that tool. You will see there are five parameters (the help file on the right is pretty good):
 
-1. Input polygons (these are the block groups here, but could be any polygons where you want land cover summarized)
-2. The land cover data  "LandCover_NewHaven_2008.img" and soon we can re-run with the new land cover data
-3. Set this to "TC_ID" always. That stands for Tree Canopy Identifier. 
+1. Input polygons (these are the block groups here, but could be any polygons where you want land cover summarized)  
+2. The land cover data "LandCover_NewHaven_2008.img" and soon we can re-run with the new land cover data  
+3. Set this to "TC_ID" always. That stands for Tree Canopy Identifier.  
 4. The name of the tree canopy table (this takes a little more explanation, but is used to see how much tree canopy there is in a an area both in area and % area formats. It also estimates where tree canopy could be based on other land cover classes.)
 5. The name of the land cover summary table. This table has area and % area of each land cover class. 
 
