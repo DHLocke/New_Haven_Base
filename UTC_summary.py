@@ -34,3 +34,18 @@ arcpy.JoinField_management(in_data="NH_2009_2013_5year_ACS", in_field="TC_ID", j
 # The following inputs are layers or table views: "NH_2009_2013_5year_ACS", "NH_2009_2013_5year_ACS_lc_tbl"
 arcpy.JoinField_management(in_data="NH_2009_2013_5year_ACS", in_field="TC_ID", join_table="NH_2009_2013_5year_ACS_lc_tbl", join_field="TC_ID", fields="Total_A;Can_A;Grass_A;Soil_A;Water_A;Build_A;Road_A;Paved_A;Perv_A;Imperv_A;Can_P;Grass_P;Soil_P;Water_P;Build_P;Road_P;Paved_P;Perv_P;Imperv_P")
 
+
+# second set of land cover summaries
+# repeating for newer data
+arcpy.Metrics2(Input_Land_Cover_Raster="C:/Users/dexterlocke/Box/_DHLocke/New_Haven/TreeCanopy_SCRCOG_2016/landcover_2016_scrcog.img", Input_Geography_Feature_Class="C:/Users/dexterlocke/Box/_DHLocke/New_Haven/New_Haven_Base/tree_canopy_gdb.gdb/NH_2013_2017_5year_ACS", TC_ID_Geography_Identifier_Field="TC_ID", Output_Land_Cover_Metrics_Table="C:/Users/dexterlocke/Box/_DHLocke/New_Haven/New_Haven_Base/tree_canopy_gdb.gdb/NH_2013_2017_5year_ACS_lc_tbl", Output_Tree_Canopy_Metrics_Table="C:/Users/dexterlocke/Box/_DHLocke/New_Haven/New_Haven_Base/tree_canopy_gdb.gdb/NH2013_2017_5year_ACS_tc_tbl")
+
+
+# Replace a layer/table view name with a path to a dataset (which can be a layer file) or create the layer/table view within the script
+# The following inputs are layers or table views: "NH_2013_2017_5year_ACS", "NH_2013_2017_5year_ACS_tc_tbl"
+arcpy.JoinField_management(in_data="NH_2013_2017_5year_ACS", in_field="TC_ID", join_table="NH_2013_2017_5year_ACS_tc_tbl", join_field="TC_ID", fields="TC_E_A;TC_Pv_A;TC_Land_A;TC_Pi_A;TC_P_A;TC_E_P;TC_Pv_P;TC_P_P;TC_Pi_P")
+
+
+# Replace a layer/table view name with a path to a dataset (which can be a layer file) or create the layer/table view within the script
+# The following inputs are layers or table views: "NH_2013_2017_5year_ACS", "NH_2013_2017_5year_ACS_lc_tbl"
+arcpy.JoinField_management(in_data="NH_2013_2017_5year_ACS", in_field="TC_ID", join_table="NH_2013_2017_5year_ACS_lc_tbl", join_field="TC_ID", fields="Total_A;Can_A;Grass_A;Soil_A;Water_A;Build_A;Road_A;Paved_A;Perv_A;Imperv_A;Can_P;Grass_P;Soil_P;Water_P;Build_P;Road_P;Paved_P;Perv_P;Imperv_P")
+
