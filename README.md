@@ -51,3 +51,22 @@ Then I opened up ArcMap (do you have access?), created a file geodatabase, and p
 You can see in both [UTC_summary.py](https://github.com/DHLocke/New_Haven_Base/blob/master/UTC_summary.py) and in the results tab of the *.mxd that these tables were then permanently joined back to the block group polygons. We can repeat all of this again with the new land cover data. And soon we can associate the requested and volunteer planted trees to these data.
 
 In summary, using R the Census data were obtained in a GIS-friendly format. Shapefiles were written so that ArcMap could create geodatabase feature classes. Then using ArcMap/ python land cover summaries were created and joined back to the original data.
+
+# New Haven projects installment 3:
+## python/ ArcMap/ land cover/ Census data and back to R
+## this also could have been called 2 maps and 4 graphs
+
+Since last we spoke the new 2016 seven-class land cover dataset was accessed via data sharing agreement from [South Central Regional Council of Governments (aka "SCRCOG")](https://scrcog.org/). These data were also created by the Spatial Analysis Lab [(aka "The SAL")](http://letters-sal.blogspot.com/) by Jarlath and colleagues. These data have the some categories as 2008 dataset. *HOWEVER* a **lot** has changed since the 2008 data were extracted and they are *NOT* comparable. Therefore we will **not** do any change analyses. We can however look at a relationship, say between canopy and household income, and see if that relations is similar in time one to time two. But we want to steer clear of any change-detection analyses. 
+
+[UTC_summary.py](https://github.com/DHLocke/New_Haven_Base/blob/master/UTC_summary.py) was extented to repeat everything we did with the 2008 land cover data within the year 2009 - 2013 American Community Survey bounaries (ACS), but for the 2016 land cover data within the year 2013 - 2017 ACS boundaries. Note that we do not need to create a new geodatabase and that the ACS boundaries were projected to match the landcover data last week. Once the land cover data were summarized in ArcGIS we can read the data back into R for graphing. The graphs in ArcMap are not very good. Note that an ArcMap version 10.0, called ["New_Haven_Tree_Canopy_arcmap10_0.mxd"](https://github.com/DHLocke/New_Haven_Base/blob/master/New_Haven_Tree_Canopy_arcmap10_0.mxd), was also created again to facilitate backward compatability. I think I'm working in ArcMap 10.5.1. This new *.mxd can replace the previous version and shows the additional steps in the "results" tab.
+
+So open up ["analyze_Census_landcover.R"](https://github.com/DHLocke/New_Haven_Base/blob/master/analyze_Census_landcover.R). You'll see that feature classes from the file geodatabase are read directly in R via the sf::st_read() function - **HOW COOL IS THAT!!!** Gone are the days of exporting to shapefile...
+
+## You said "this also could have been called 2 maps and 4 graphs"
+## Where are the graphs?
+
+Based on the code, the challenge to you Zhanghao is to make those 2 maps and 4 graphs that show tree canopy, income, some racial categories, and for both land cover datasets.
+
+Specifically save out those graphs and email them to dexter.locke@aya.yale.edu. Some graphs and maps have one main image, some two panes, on one has three panes. Export the figures in different sizes. For example, save some as 13.33 x 7.5 inches (or 33.867 x 19.05 cm) which lends itseslf well to PowerPoint. Try saving others 6.5 x 6.5 inches, which lends itself well to Microsoft Word documents. Try also saving to different formats like .png and .jpg.
+
+*Then we can discuss the new data and some very preliminary findings together*
